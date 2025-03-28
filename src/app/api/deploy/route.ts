@@ -15,12 +15,15 @@ export async function POST(req: Request) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: "test-deployment",
+                name: "store-deploy-test",
                 gitSource: {
                     type: "github",
-                    repo: "https://github.com/Yogesh1290/store-deploy-test", // ✅ Replace with your actual repo
-                    ref: "main", // Optional: branch name
+                    repo: "https://github.com/Yogesh1290/store-deploy-test", // ✅ must be public or accessible to their GitHub/Vercel
+                    ref: "main",
                 },
+                projectSettings: {
+                    framework: "nextjs"
+                }
             }),
         });
 
