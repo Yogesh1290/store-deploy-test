@@ -29,8 +29,12 @@ export default function Home() {
             } else {
                 setMessage(`❌ Deployment failed: ${data.error}`);
             }
-        } catch (error) {
-            setMessage("Error deploying: " + error.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setMessage("Error deploying: " + error.message);
+            } else {
+                setMessage("An unknown error occurred during deployment.");
+            }
         }
     };
 

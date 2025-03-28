@@ -16,7 +16,11 @@ export async function POST(req: Request) {
             },
             body: JSON.stringify({
                 name: "test-deployment",
-                gitSource: { type: "github", repo: "your-repo-name" }, // Change to your repo
+                gitSource: {
+                    type: "github",
+                    repo: "https://github.com/Yogesh1290/store-deploy-test", // ✅ Replace with your actual repo
+                    ref: "main", // Optional: branch name
+                },
             }),
         });
 
@@ -25,9 +29,13 @@ export async function POST(req: Request) {
         if (response.ok) {
             return NextResponse.json({ success: true, url: data.url });
         } else {
-            return NextResponse.json({ success: false, error: data.error.message }, { status: 400 });
+            return NextResponse.json({ success: false, error: data.error?.message || "Deployment failed" }, { status: 400 });
         }
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+        } else {
+            return NextResponse.json({ success: false, error: "An unknown error occurred." }, { status: 500 });
+        }
     }
 }
